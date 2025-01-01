@@ -1,23 +1,28 @@
-<!DOCTYPE html>
-<html lang="en">
+<% layout('./layouts/boilerplate') -%>
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Travelectra</title>
-</head>
+    <body>
+        <h1 class="list-heading">All Listings</h1>
 
-<body>
-    <h1>Listing</h1>
-    <form action="/listing/new" method="get"><button>CREATE</button></form>
-    
-    <ul>
-        <%for (list of listing){%>
-            <li>
-                <a href="/listing/<%= list._id %>"><%= list.title %></a>
-            </li>
-            <%}%>
-    </ul>
-</body>
+        <div class="row row-cols-lg-3 row-cols-md-2 row-cols-sm-1 g-4">
+            <% for (let list of listing) { %>
+                <div class="col">
+                    <div class="card h-100">
+                        <img src="<%= list.image %>" class="card-img-top" alt="Image of <%= list.title %>">
+                        <div class="card-body">
+                            <h5 class="card-title"><b>
+                                    <%= list.title %>
+                                </b></h5>
+                            <p class="card-text">
+                                <%= list.description %>
+                            </p>
+                            <p class="card-text"><b>&#8377; <%= list.price.toLocaleString("en-IN") %> / night</b></p>
+                            <p class="card-text">Location: <%= list.location %>, <%= list.country %>
+                            </p>
+                            <a href="/listing/<%= list._id %>" class="listing-button btn btn-primary">View Details</a>
+                        </div>
+                    </div>
+                </div>
+                <% } %>
+        </div>
 
-</html>
+    </body>

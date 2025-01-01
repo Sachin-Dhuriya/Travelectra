@@ -6,6 +6,7 @@ const port = 8080;
 //------------------------------Setting EJS--------------------------
 app.set("view engine","ejs");
 app.set("views",path.join(__dirname,"../views"))//-> use ../ because the views folder is outside the src folder
+app.use(express.static(path.join(__dirname,"../public")))
 //------------------------------Database Imports------------------------
 const Listing = require("./listingDB")
 //-------------------------------Parsing Data---------------------------
@@ -14,8 +15,9 @@ app.use(express.urlencoded({extended : true}))
 //--------------------------------Method Override--------------------------
 var methodOverride = require('method-override')
 app.use(methodOverride('_method'))
-
-
+//-------------------------------EJS-Mate-----------------------------------
+const ejsMate = require("ejs-mate");
+app.engine("ejs",ejsMate);
 
 app.listen(port,()=>{
     console.log(`App is listenning on port ${port}.....`);
@@ -23,7 +25,7 @@ app.listen(port,()=>{
 //--------------------------------Routes------------------------------------
 //-------------------------------index Routes--------------------------------
 app.get("/",(req,res)=>{
-    res.send("Welcome to the home route")
+    res.render("./listings/home.ejs")
 })
 //-------------------------------Listing Routes--------------------------------
 app.get("/listing",async (req,res)=>{

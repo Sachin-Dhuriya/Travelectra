@@ -1,17 +1,29 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Travelectra</title>
-</head>
-<body>
-    <h1><%= data.title %></h1>
-    <img width="250px" src="<%= data.image %>" alt="">
-    <h3><%= data.description %></h3>
-    <h2>&#8377; <%= data.price.toLocaleString("en-IN") %></h2>
-    <h3>location : <%= data.location %>,<%= data.country %></h3>
-    <form action="/listing/<%= data._id %>/edit" method="get"><button>EDIT</button></form>
-    <form action="/listing/<%= data._id %>?_method=DELETE" method="post"><button>Delete Listing</button></form>
-</body>
-</html>
+<% layout('./layouts/boilerplate') -%>
+
+    <body>
+        <div class="listing-container">
+            <h1 class="listing-title">
+                <%= data.title %>
+            </h1>
+            <div class="listing-image">
+                <img src="<%= data.image %>" alt="Image of <%= data.title %>">
+            </div>
+            <div class="listing-details">
+                <h3 class="listing-description">
+                    <%= data.description %>
+                </h3>
+                <h2 class="listing-price">&#8377; <%= data.price.toLocaleString("en-IN") %>
+                </h2>
+                <h3 class="listing-location">Location: <%= data.location %>, <%= data.country %>
+                </h3>
+            </div>
+            <div class="listing-actions">
+                <form action="/listing/<%= data._id %>/edit" method="get">
+                    <button class="edit-button">Edit</button>
+                </form>
+                <form action="/listing/<%= data._id %>?_method=DELETE" method="post">
+                    <button class="delete-button">Delete Listing</button>
+                </form>
+            </div>
+        </div>
+    </body>
