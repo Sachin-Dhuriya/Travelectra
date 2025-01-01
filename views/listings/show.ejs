@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Travelectra</title>
+</head>
+<body>
+    <h1><%= data.title %></h1>
+    <img width="250px" src="<%= data.image %>" alt="">
+    <h3><%= data.description %></h3>
+    <h2>&#8377; <%= data.price.toLocaleString("en-IN") %></h2>
+    <h3>location : <%= data.location %>,<%= data.country %></h3>
+    <form action="/listing/<%= data._id %>/edit" method="get"><button>EDIT</button></form>
+    <form action="/listing/<%= data._id %>?_method=DELETE" method="post"><button>Delete Listing</button></form>
+</body>
+</html>

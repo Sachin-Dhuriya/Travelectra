@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit</title>
+</head>
+<body>
+
+    <form action="/listing/<%= data._id %>?_method=PUT" method="post">
+        <label for="title">Title : </label>
+        <input name="listing[title]" type="text" value="<%= data.title %>" required > <br>
+        <label for="description">Description : </label> <br>
+        <textarea rows="10" cols="50" name="listing[description]" required><%= data.description %></textarea> <br>
+        <label for="image">Image : </label>
+        <input name="listing[image]" type="text" value="<%= data.image %>" required > <br>
+        <label for="price">Price : </label>
+        <input name="listing[price]" type="number" value="<%= data.price %>" required > <br>
+        <label for="location">Location : </label>
+        <input name="listing[location]" type="text" value="<%= data.location %>" required > <br>
+        <label for="country">Country : </label>
+        <input name="listing[country]" type="text" value="<%= data.country %>" required > <br>
+        <button>UPDATE</button>
+        
+    </form>
+    
+</body>
+</html>
