@@ -3,36 +3,51 @@
     <body>
         <div class="form-container">
             <h1>Edit Listing</h1>
-            <form action="/listing/<%= data._id %>?_method=PUT" method="post">
+            <form action="/listing/<%= data._id %>?_method=PUT" method="post" class="needs-validation" novalidate>
                 <div class="form-group">
                     <label for="title">Title:</label>
-                    <input name="listing[title]" type="text" value="<%= data.title %>" required>
+                    <input class="form-control" name="listing[title]" type="text" value="<%= data.title %>" required>
+                    <div class="invalid-feedback">
+                        Enter a valid title
+                      </div>
                 </div>
 
                 <div class="form-group">
                     <label for="description">Description:</label>
-                    <textarea name="listing[description]" rows="10" cols="50"
+                    <textarea class="form-control" name="listing[description]" rows="10" cols="50"
                         required><%= data.description %></textarea>
+                        <div class="invalid-feedback">
+                            Enter a valid description
+                          </div>
                 </div>
 
                 <div class="form-group">
                     <label for="image">Image:</label>
-                    <input name="listing[image]" type="text" value="<%= data.image %>" required>
+                    <input class="form-control" name="listing[image]" type="text" value="<%= data.image %>" required>
                 </div>
 
                 <div class="form-group">
                     <label for="price">Price:</label>
-                    <input name="listing[price]" type="number" value="<%= data.price %>" required>
+                    <input class="form-control" name="listing[price]" type="number" value="<%= data.price %>" required>
+                    <div class="invalid-feedback">
+                        Enter price
+                      </div>
                 </div>
 
                 <div class="form-group">
                     <label for="location">Location:</label>
-                    <input name="listing[location]" type="text" value="<%= data.location %>" required>
+                    <input class="form-control" name="listing[location]" type="text" value="<%= data.location %>" required>
+                    <div class="invalid-feedback">
+                        Enter location
+                      </div>
                 </div>
 
                 <div class="form-group">
                     <label for="country">Country:</label>
-                    <input name="listing[country]" type="text" value="<%= data.country %>" required>
+                    <input class="form-control" name="listing[country]" type="text" value="<%= data.country %>" required>
+                    <div class="invalid-feedback">
+                        Enter country
+                      </div>
                 </div>
 
                 <button class="edit-button" type="submit">UPDATE</button>
