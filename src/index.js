@@ -28,6 +28,19 @@ const asyncWrap = require("../utils/wrapasync");
 const ExpressError = require("../utils/ExpressError");
 const { error } = require("console");
 
+//----------------------------------JOI package (for Schema Validation)-------------------------
+const {listingSchema} = require("./schema.js")
+
+//------------------------------------Validate Listing------------------------------------------
+const validateListing = (req,res,next)=>{
+    let {error} =  listingSchema.validate(req.body);
+    if(error){
+        throw new ExpressError(400,error)
+    }else{
+        next();
+    }
+}
+
 //--------------------------------Routes------------------------------------
 //-------------------------------index Routes--------------------------------
 app.get("/", (req, res) => {
@@ -44,10 +57,7 @@ app.get("/listing/new", (req, res) => {
     res.render("./listings/new")
 })
 
-app.post("/listing",asyncWrap(async (req, res, next) => {
-    if(!req.body.listing){
-        throw new ExpressError(400,"Send Valid Data for Listing")
-    }
+app.post("/listing", validateListing ,asyncWrap(async (req, res, next) => {
     let newProperty = new Listing(req.body.listing);
     await newProperty.save();
     res.redirect("/listing")
@@ -67,10 +77,7 @@ app.get("/listing/:_id/edit",asyncWrap(async (req, res) => {
     res.render("./listings/edit", { data })
 })) 
 
-app.put("/listing/:_id",asyncWrap(async (req, res) => {
-    if(!req.body.listing){
-        throw new ExpressError(400,"Send Valid Data for Listing")
-    }
+app.put("/listing/:_id", validateListing, asyncWrap(async (req, res) => {
     let { _id } = req.params;
     await Listing.findByIdAndUpdate(_id, { ...req.body.listing })
     res.redirect("/listing")
