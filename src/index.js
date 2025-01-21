@@ -8,7 +8,7 @@ app.set("view engine", "ejs");
 app.set("views", path.join(__dirname, "../views"))//-> use ../ because the views folder is outside the src folder
 app.use(express.static(path.join(__dirname, "../public")))
 //------------------------------Database Imports------------------------
-const Listing = require("./listingDB")
+const Listing = require("../models/listingDB.js")
 //-------------------------------Parsing Data---------------------------
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }))
@@ -29,7 +29,7 @@ const ExpressError = require("../utils/ExpressError");
 const { error } = require("console");
 
 //----------------------------------JOI package (for Schema Validation)-------------------------
-const {listingSchema} = require("./schema.js")
+const {listingSchema} = require("../models/schema.js")
 
 //------------------------------------Validate Listing------------------------------------------
 const validateListing = (req,res,next)=>{

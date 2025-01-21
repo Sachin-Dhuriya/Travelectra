@@ -526,3 +526,121 @@ body {
     background-color: #c82333;
     transform: scale(1.05);
 }
+
+/*Listing Review Form*/
+/* General container styling */
+.ListingReview-container {
+    margin: 20px auto;
+    padding: 20px;
+    max-width: 600px;
+    background-color: #f9f9f9;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    font-family: Arial, sans-serif;
+}
+
+/* Form heading */
+.ListingReview-heading h2 {
+    margin-bottom: 15px;
+    color: #333;
+    font-size: 1.5rem;
+    text-align: center;
+}
+
+/* Rating section */
+.ListingReview-rating {
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.ListingReview-rating label {
+    font-weight: bold;
+    color: #555;
+}
+
+.ListingReview-input {
+    flex: 1;
+}
+
+/* Comment section */
+.ListingReview-comment {
+    margin-bottom: 20px;
+}
+
+.ListingReview-comment label {
+    font-weight: bold;
+    color: #555;
+    display: block;
+    margin-bottom: 8px;
+}
+
+.ListingReview-textarea {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 1rem;
+    resize: vertical;
+    box-sizing: border-box;
+}
+
+/* Submit button */
+.ListingReview-submit {
+    display: block;
+    width: 100%;
+    padding: 10px;
+    background-color: blueviolet;
+    color: white;
+    font-size: 1rem;
+    font-weight: bold;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.ListingReview-submit:hover {
+    background-color: #0056b3;
+}
+
+/* Media Queries */
+@media (max-width: 768px) {
+    .ListingReview-container {
+        padding: 15px;
+    }
+
+    .ListingReview-heading h2 {
+        font-size: 1.25rem;
+    }
+
+    .ListingReview-textarea {
+        font-size: 0.9rem;
+    }
+
+    .ListingReview-submit {
+        font-size: 0.9rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .ListingReview-rating {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .ListingReview-input {
+        width: 100%;
+    }
+
+    .ListingReview-textarea {
+        font-size: 0.85rem;
+    }
+
+    .ListingReview-submit {
+        font-size: 0.85rem;
+        padding: 8px;
+    }
+}

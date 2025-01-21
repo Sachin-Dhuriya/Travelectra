@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
 const mongoURL = "mongodb://127.0.0.1:27017/Project1"
-const Listing = require("./listingDB") 
+const Listing = require("../src/listingDB") 
 async function main() {
     await mongoose.connect(mongoURL)
 }

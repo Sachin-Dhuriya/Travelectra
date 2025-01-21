@@ -1,5 +1,6 @@
 const mongoose = require("mongoose");
 const mongoURL = "mongodb://127.0.0.1:27017/Project1"
+const Schema = mongoose.Schema;
 async function main() {
     await mongoose.connect(mongoURL)
 }
@@ -33,6 +34,10 @@ const listingSchema = new mongoose.Schema({
         type : String,
         required : true,
     },
+    reviews: [{
+        type: Schema.Types.ObjectId,
+        ref: "Review",
+    }]
 })
 
 const Listing = new mongoose.model("Listing",listingSchema)
