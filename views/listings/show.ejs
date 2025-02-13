@@ -1,6 +1,12 @@
 <% layout('./layouts/boilerplate') -%>
 
     <body>
+        <%if(success && success.length){%>
+            <div class="alert alert-success alert-dismissible fade show col-6 offset-3" role="alert">
+                <%= success %>
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        <%}%>
         <div class="listing-container">
             <h1 class="listing-title">
                 <%= data.title %>
@@ -28,21 +34,32 @@
             <hr>
             <br>
             <div class="ListingReview-container">
-                <form action="" method="post" class="ListingReview-form">
+                <form action="/listing/<%= data._id %>/review" method="post" class="ListingReview-form"  >
                     <div class="ListingReview-heading">
                         <h2>Leave a review</h2>
                     </div>
                     <div class="ListingReview-rating">
                         <label for="rating">Rating: </label>
-                        <input type="range" min="1" max="5" name="review[rating]" class="ListingReview-input">
+                        <input type="range" min="1" max="5" name="review[rating]" class="ListingReview-input" >
                     </div>
                     <div class="ListingReview-comment">
                         <label for="comment">Comment: </label>
-                        <textarea name="comment" id="comment" cols="100" rows="10" class="ListingReview-textarea"></textarea>
+                        <textarea name="review[comment]" id="comment" cols="100" rows="10" class="ListingReview-textarea" required></textarea>
                     </div>
                     <button class="ListingReview-submit">SUBMIT</button>
                 </form>
-            </div>            
+            </div>   
+            <hr>
+            <div class="reviews-container">
+                <h2>Rating and Reviews</h2>
+                <%for (r of data.reviews ){%>
+                <div class="reviews-container-div">
+                <h3 class="reviews-container-rating"><%= r.rating %>⭐</h3>
+                <h4 class="reviews-container-comment"><%= r.comment %></h4> 
+                <form action="/listing/<%= data.id%>/review/<%= r._id%>?_method=DELETE" method="post"><button>DELETE</button></form>
+                </div>
+                <%}%>
+            </div>
             
         </div>
     </body>

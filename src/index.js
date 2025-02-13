@@ -3,12 +3,17 @@ const express = require("express");
 const app = express();
 const path = require("path");
 const port = 8080;
+//------------------------------Requiring Session---------------------------
+const session = require('express-session'); 
+//------------------------------Requiring flash---------------------------
+const flash = require('connect-flash');
 //------------------------------Setting EJS--------------------------
 app.set("view engine", "ejs");
 app.set("views", path.join(__dirname, "../views"))//-> use ../ because the views folder is outside the src folder
 app.use(express.static(path.join(__dirname, "../public")))
 //------------------------------Database Imports------------------------
 const Listing = require("../models/listingDB.js")
+const Review = require("../models/reviews.js")
 //-------------------------------Parsing Data---------------------------
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }))
@@ -19,6 +24,20 @@ app.use(methodOverride('_method'))
 const ejsMate = require("ejs-mate");
 app.engine("ejs", ejsMate);
 
+//------------------------------Defining session-------------------------------
+const sessionOptions = {
+    secret: "mysupersecretcode",
+    resave: false,
+    saveUninitialized: true,
+    cookie: {
+        expires: Date.now() + 7 * 24 * 60 * 60 * 1000,
+        maxAge: 7 * 24 * 60 * 60 * 1000,
+        httpOnly: true,  
+    }
+}
+app.use(session(sessionOptions));
+app.use(flash());
+
 app.listen(port, () => {
     console.log(`App is listenning on port ${port}.....`);
 })
@@ -27,19 +46,11 @@ const asyncWrap = require("../utils/wrapasync");
 //----------------------------------Requring ExpressError-------------------------
 const ExpressError = require("../utils/ExpressError");
 const { error } = require("console");
-
+//-----------------------------------Requiring Listing---------------------------------
+const listing = require("./routes/listing.js")
+const review = require("./routes/review.js")
 //----------------------------------JOI package (for Schema Validation)-------------------------
-const {listingSchema} = require("../models/schema.js")
-
-//------------------------------------Validate Listing------------------------------------------
-const validateListing = (req,res,next)=>{
-    let {error} =  listingSchema.validate(req.body);
-    if(error){
-        throw new ExpressError(400,error)
-    }else{
-        next();
-    }
-}
+const {listingSchema , reviewSchema} = require("../models/schema.js")
 
 //--------------------------------Routes------------------------------------
 //-------------------------------index Routes--------------------------------
@@ -47,49 +58,13 @@ app.get("/", (req, res) => {
     res.render("./listings/home.ejs")
 })
 //-------------------------------Listing Routes--------------------------------
-app.get("/listing",asyncWrap(async (req, res) => {
-    let listing = await Listing.find()
-    res.render("./listings/listing", { listing })
-})) 
-//--------------------------------- Create/New Routes-------------------------------------
-
-app.get("/listing/new", (req, res) => {
-    res.render("./listings/new")
+app.use((req,res,next)=>{
+    res.locals.success = req.flash("success");
+    next(); 
 })
-
-app.post("/listing", validateListing ,asyncWrap(async (req, res, next) => {
-    let newProperty = new Listing(req.body.listing);
-    await newProperty.save();
-    res.redirect("/listing")
-})) 
-//-------------------------------Show Routes--------------------------------
-app.get("/listing/:_id",asyncWrap(async (req, res) => {
-    let { _id } = req.params;
-    let data = await Listing.findById(_id)
-    res.render("./listings/show", { data })
-})) 
-
-//--------------------------------Edit/Update route-------------------------------
-
-app.get("/listing/:_id/edit",asyncWrap(async (req, res) => {
-    let { _id } = req.params;
-    let data = await Listing.findById(_id);
-    res.render("./listings/edit", { data })
-})) 
-
-app.put("/listing/:_id", validateListing, asyncWrap(async (req, res) => {
-    let { _id } = req.params;
-    await Listing.findByIdAndUpdate(_id, { ...req.body.listing })
-    res.redirect("/listing")
-}))
-
-//----------------------------------Delete route--------------------------------------------
-app.delete("/listing/:_id",asyncWrap(async (req, res) => {
-    let { _id } = req.params;
-    await Listing.findByIdAndDelete(_id)
-    res.redirect("/listing")
-})) 
-
+app.use("/listing",listing)
+//-------------------------------Listing Routes--------------------------------
+app.use("/listing/:_id/review",review)
 //------------------------------------
 app.all("*",(req,res,next)=>{
     next(new ExpressError(404,"Page Not Found"))
