@@ -1,0 +1,31 @@
+<% layout('./layouts/boilerplate') -%>
+<% if (typeof success !== "undefined" && success.length) { %>
+    <div class="alert alert-success alert-dismissible fade show col-6 offset-3" role="alert">
+        <%= success %>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+<%}%>
+<div class="wrapper">
+    <div class="content">
+        <h1>Signup "Travelectra"</h1>
+        <div class="signup-container">
+            <form action="/signup" method="post">
+                <label for="username">Username</label>
+                <input type="text" id="username" name="username" placeholder="Enter username" required>
+                
+                <label for="password">Password</label>
+                <input type="password" id="password" name="password" placeholder="Enter password" required>
+                
+                <label for="email">E-mail</label>
+                <input type="email" id="email" name="email" placeholder="Enter email" required>
+                
+                <button type="submit">Signup</button>
+            </form>
+        </div>
+    </div>
+</div>
+
+
+    
+    
+</body>
