@@ -41,11 +41,7 @@
     }
     app.use(session(sessionOptions));
     app.use(flash());
-    app.use((req, res, next) => {
-        res.locals.success = req.flash("success");
-        res.locals.error = req.flash("error"); // Add error messages from failureFlash
-        next();
-    });
+    
     //----------------Passport always after session middleware--------
     app.use(passport.initialize());
     app.use(passport.session());
@@ -53,6 +49,13 @@
 
     passport.serializeUser(User.serializeUser());
     passport.deserializeUser(User.deserializeUser()); 
+
+    app.use((req, res, next) => {
+        res.locals.success = req.flash("success");
+        res.locals.error = req.flash("error"); // Add error messages from failureFlash
+        res.locals.currUser = req.user;
+        next();
+    });
 
     app.listen(port, () => {
         console.log(`App is listenning on port ${port}.....`);
@@ -67,6 +70,7 @@
     const review = require("./routes/review.js")
     const signup = require("./routes/signup.js")
     const login = require("./routes/login.js")
+    const logout = require("./routes/logout.js")
     //----------------------------------JOI package (for Schema Validation)-------------------------
     const {listingSchema , reviewSchema} = require("../models/schema.js")
 
@@ -78,6 +82,7 @@
     //-------------------------------Login/SignUp Routes--------------------------------
     app.use("/signup",signup);
     app.use("/login",login)
+    app.use("/logout",logout)
     //-------------------------------Listing Routes--------------------------------
     app.use("/listing",listing)
     //-------------------------------Listing Routes--------------------------------
