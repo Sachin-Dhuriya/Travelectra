@@ -26,6 +26,7 @@ router.get("/new",isLoggedIn, (req, res) => {
 
 router.post("/", validateListing ,asyncWrap(async (req, res, next) => {
     let newProperty = new Listing(req.body.listing);
+    newProperty.owner = req.user._id;
     await newProperty.save();
     req.flash("success","New Listing Created...!!!")
     res.redirect("/listing")
@@ -33,7 +34,7 @@ router.post("/", validateListing ,asyncWrap(async (req, res, next) => {
 //-------------------------------Show Routes--------------------------------
 router.get("/:_id",asyncWrap(async (req, res) => {
     let { _id } = req.params;
-    let data = await Listing.findById(_id).populate("reviews");
+    let data = await Listing.findById(_id).populate("reviews").populate("owner");
     if(!data){
         req.flash("error","The Listing is Deleted !!")
         res.redirect("./listings/listing")

@@ -37,7 +37,11 @@ const listingSchema = new mongoose.Schema({
     reviews: [{
         type: Schema.Types.ObjectId,
         ref: "Review",
-    }]
+    }],
+    owner: {
+        type: Schema.Types.ObjectId,
+        ref: "User"
+    }
 })
 
 const Listing = new mongoose.model("Listing",listingSchema)
