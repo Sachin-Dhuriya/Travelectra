@@ -7,6 +7,12 @@
                 <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
             </div>
         <%}%>
+        <% if (typeof error !== "undefined" && error.length) { %>
+            <div class="alert alert-danger alert-dismissible fade show col-6 offset-3" role="alert">
+                <%= error %>
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        <% } %>
         <div class="listing-container">
             <h1 class="listing-title">
                 <%= data.title %>
@@ -24,14 +30,18 @@
                 <h3 class="listing-location">Location: <%= data.location %>, <%= data.country %>
                 </h3>
             </div>
-            <div class="listing-actions">
-                <form action="/listing/<%= data._id %>/edit" method="get">
-                    <button class="edit-button">Edit</button>
-                </form>
-                <form action="/listing/<%= data._id %>?_method=DELETE" method="post">
-                    <button class="delete-button">Delete Listing</button>
-                </form>
-            </div>
+            <%if(currUser && currUser._id.equals(data.owner._id)){%>
+                <div class="listing-actions">
+                    <form action="/listing/<%= data._id %>/edit" method="get">
+                        <button class="edit-button">Edit</button>
+                    </form>
+                    <form action="/listing/<%= data._id %>?_method=DELETE" method="post">
+                        <button class="delete-button">Delete Listing</button>
+                    </form>
+                </div>
+                    
+            <%}%>
+            
             <hr>
             <br>
             <div class="ListingReview-container">

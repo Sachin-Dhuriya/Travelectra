@@ -4,7 +4,8 @@ const asyncWrap = require("../../utils/wrapasync");
 const {listingSchema , reviewSchema} = require("../../models/schema.js")
 const ExpressError = require("../../utils/ExpressError");
 const Listing = require("../../models/listingDB.js")
-const {isLoggedIn} = require("../middleware.js")
+const {isLoggedIn, isOwner} = require("../middleware.js");
+const { findById } = require("../../models/reviews.js");
 const validateListing = (req,res,next)=>{ 
     let {error} =  listingSchema.validate(req.body);
     if(error){
@@ -46,21 +47,26 @@ router.get("/:_id",asyncWrap(async (req, res) => {
 
 //--------------------------------Edit/Update route-------------------------------
 
-router.get("/:_id/edit",isLoggedIn,asyncWrap(async (req, res) => {
+router.get("/:_id/edit",isLoggedIn,isOwner,asyncWrap(async (req, res) => {
     let { _id } = req.params;
     let data = await Listing.findById(_id);
     res.render("./listings/edit", { data })
 })) 
 
-router.put("/:_id", validateListing, asyncWrap(async (req, res) => {
+router.put("/:_id",isOwner, validateListing, asyncWrap(async (req, res) => {
     let { _id } = req.params;
+    let listing = findById(_id)
+    if(listing.owner._id.equals(currUser._id)){
+        req.flash("success","You dont have permission to Edit");
+        res.redirect(`/listing/${_id}`)
+    }
     await Listing.findByIdAndUpdate(_id, { ...req.body.listing })
     req.flash("success","Listing Updated Successfully...!!!")
-    res.redirect("/listing")
+    res.redirect(`/listing/${_id}`)
 }))
 
 //----------------------------------Delete route--------------------------------------------
-router.delete("/:_id",isLoggedIn,asyncWrap(async (req, res) => {
+router.delete("/:_id",isLoggedIn,isOwner,asyncWrap(async (req, res) => {
     let { _id } = req.params;
     await Listing.findByIdAndDelete(_id)
     req.flash("success","Listing Deleted Successfully...!!!")
